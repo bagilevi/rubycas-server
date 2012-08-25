@@ -150,48 +150,11 @@ ssl_cert: /path/to/your/ssl.pem
 
 ##### DATABASE #################################################################
 
-# Set up the database connection. Make sure that this database is secure!
-# 
-# By default, we use MySQL, since it is widely used and does not require any 
-# additional ruby libraries besides ActiveRecord.
+# The database is configured through environment variable
 #
-# With MySQL, your config would be something like the following:
-# (be sure to create the casserver database in MySQL beforehand,
-#   i.e. `mysqladmin -u root create casserver`)
-
-database:
-  adapter: mysql
-  database: casserver
-  username: root
-  password: 
-  host: localhost
-  reconnect: true
-
-# IMPORTANT! By default, the server can handle up to ~5 concurrent requests
-# (without queuing). You can increase this by setting the database connection
-# pool size to a higher number. For example, to handle up to ~10 concurrent 
-# requests:
+# Example:
 #
-#database:
-#  pool: 10
-#  adapter: mysql
-#  database: casserver
-#  username: root
-#  password: 
-#  host: localhost
-
-#
-# Instead of MySQL you can use SQLite3, PostgreSQL, MSSQL, or anything else 
-# supported by ActiveRecord.
-#
-# With SQLite3 (which does not require a separate database server), your 
-# configuration would look something like the following (don't forget to install 
-# the sqlite3-ruby gem beforehand!):
-
-#database:
-#  adapter: sqlite3
-#  database: /var/lib/casserver.db
-  
+#   DATABASE_URL=postgres://myuser:mypass@myhost/mydatabase
 
 # By default RubyCAS-Server will run migrations at every startup to ensure
 # that its database schema is up-to-date. To disable this behaviour set

@@ -138,9 +138,30 @@ module CASServer
       end
       
       config.merge! HashWithIndifferentAccess.new(YAML.load(config_file))
+      config.merge! database_config_from_env
       set :server, config[:server] || 'webrick'
     end
-    
+
+    def self.database_config_from_env
+      if ENV['DATABASE_URL']
+        require 'uri'
+        db = URI.parse(ENV['DATABASE_URL'])
+        {
+          :database => {
+            :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
+            :host     => db.host,
+            :port     => db.port,
+            :username => db.user,
+            :password => db.password,
+            :database => db.path[1..-1],
+            :encoding => 'utf8'
+          }
+        }
+      else
+        {}
+      end
+    end
+
     def self.reconfigure!(config)
       config.each do |key, val|
         self.config[key] = val
